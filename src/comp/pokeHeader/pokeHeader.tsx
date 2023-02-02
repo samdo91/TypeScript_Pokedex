@@ -1,17 +1,31 @@
 import styled from "@emotion/styled";
-import React from "react";
+import { ChangeEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { POKE_IMAGE_TYPE } from "../store/pokeType";
+import { RootState } from "../store/redux";
+import { changeImageType, pokeImageKeyType } from "../store/redux/pokeSlice";
+
 function PokeHeader() {
+  const type = useSelector((state: RootState) => state.imageType.type);
+  const dispatch = useDispatch();
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(
+      changeImageType({
+        type: e.target.value as pokeImageKeyType,
+      })
+    );
+  };
   return (
     <HeaderDiv>
       <Link to="/">
         <Title> Pokédex</Title>
       </Link>
 
-      <Select name="스프라이트">
-        <option value="official">official</option>
-        <option value="">드림월드</option>
-        <option value="">택스트</option>
+      <Select value={type} name="스프라이트" onChange={handleChange}>
+        <option value={POKE_IMAGE_TYPE.OFFCIAL_ARTWORK}>Official</option>
+        <option value={POKE_IMAGE_TYPE.DREAM_WORLD}>Dream_world</option>
+        <option value={POKE_IMAGE_TYPE.FRONT_DEFAULT}>Default</option>
       </Select>
     </HeaderDiv>
   );

@@ -4,6 +4,8 @@ import PokeNameChip from "./pokeNameChip/pokeNameChip";
 import Pokemark from "./pokeMark/pokemak";
 import PokePersonalapi from "../../store/pokePersonalapi";
 import { useInView } from "react-intersection-observer";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/redux";
 
 interface IpersonalList {
   name: string;
@@ -17,11 +19,14 @@ interface IpersonalList {
     dream_world: string;
     official_artwork: string;
     front_default: string;
+    [prop: string]: any; // 이게 뭔지 찾아야 할것이다. 내 생각으로는 뭔가 any를 암묵적으로 포함시키는 문장같다.
   };
 }
 
 function PokeCard(props: { name: string; url: string }) {
   const { name, url } = props;
+
+  const imageType = useSelector((state: RootState) => state.imageType.type); // redux 사용
 
   const { ref, inView, entry } = useInView({
     /* Optional options */
@@ -53,7 +58,7 @@ function PokeCard(props: { name: string; url: string }) {
       const speciesResult = results.speciesResult;
       const koreaNames =
         speciesResult.names.find(
-          (item: { language: { name: any } }) => item.language.name === "ko"
+          (item: { language: { name: string } }) => item.language.name === "ko"
         )?.name ?? result.name;
       setPersonalList({
         name: result.name,
@@ -99,7 +104,7 @@ function PokeCard(props: { name: string; url: string }) {
         </Header>
         <Boby>
           <Img
-            src={personalList.sprites.official_artwork}
+            src={personalList.sprites[imageType]}
             alt={personalList.koreaName}
           ></Img>
         </Boby>
