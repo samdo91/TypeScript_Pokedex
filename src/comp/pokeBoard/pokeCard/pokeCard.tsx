@@ -4,6 +4,8 @@ import PokeNameChip from "./pokeNameChip/pokeNameChip";
 import Pokemark from "./pokeMark/pokemak";
 import PokePersonalapi from "../../store/pokePersonalapi";
 import { useInView } from "react-intersection-observer";
+import { useAtom } from "jotai";
+import { pokeImageType } from "../../store/jotai";
 
 interface IpersonalList {
   name: string;
@@ -17,12 +19,13 @@ interface IpersonalList {
     dream_world: string;
     official_artwork: string;
     front_default: string;
+    [prop: string]: any;
   };
 }
 
 function PokeCard(props: { name: string; url: string }) {
   const { name, url } = props;
-
+  const [type, setType] = useAtom(pokeImageType);
   const { ref, inView, entry } = useInView({
     /* Optional options */
     threshold: 0,
@@ -99,7 +102,7 @@ function PokeCard(props: { name: string; url: string }) {
         </Header>
         <Boby>
           <Img
-            src={personalList.sprites.official_artwork}
+            src={personalList.sprites[type.type]}
             alt={personalList.koreaName}
           ></Img>
         </Boby>

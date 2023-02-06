@@ -1,17 +1,26 @@
 import styled from "@emotion/styled";
-import React from "react";
+import { useAtom } from "jotai";
+import React, { ChangeEvent } from "react";
 import { Link } from "react-router-dom";
+import { POKE_IMAGE_TYPE } from "../store/jotai";
+import { pokeImageType } from "../store/jotai";
+
 function PokeHeader() {
+  const [type, setType] = useAtom(pokeImageType);
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setType({ type: e.target.value });
+  };
+
   return (
     <HeaderDiv>
       <Link to="/">
         <Title> Pokédex</Title>
       </Link>
 
-      <Select name="스프라이트">
-        <option value="official">official</option>
-        <option value="">드림월드</option>
-        <option value="">택스트</option>
+      <Select value={type.type} name="스프라이트" onChange={handleChange}>
+        <option value={POKE_IMAGE_TYPE.OFFCIAL_ARTWORK}>Official</option>
+        <option value={POKE_IMAGE_TYPE.DREAM_WORLD}>Dream_world</option>
+        <option value={POKE_IMAGE_TYPE.FRONT_DEFAULT}>Default</option>
       </Select>
     </HeaderDiv>
   );

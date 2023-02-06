@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import PokeHeader from "../../pokeHeader/pokeHeader";
 import Pokemark from "../pokeCard/pokeMark/pokemak";
 import PokePersonalapi from "../../store/pokePersonalapi";
+import { useAtom } from "jotai";
+import { pokeImageType } from "../../store/jotai";
 
 interface IDataList {
   name: string;
@@ -16,6 +18,7 @@ interface IDataList {
     dream_world: string;
     official_artwork: string;
     front_default: string;
+    [prop: string]: any;
   };
   types: string[];
   stats: [
@@ -30,6 +33,7 @@ interface IDataList {
 
 function PoekDetail() {
   const { itemName } = useParams() as { itemName: string };
+  const [type, setType] = useAtom(pokeImageType);
   const [pokeDataList, setPokeDataList] = useState<IDataList>({
     name: "",
     koreaName: "",
@@ -117,7 +121,7 @@ function PoekDetail() {
       <Body>
         <ImgContainer>
           <Img
-            src={pokeDataList.sprites.official_artwork}
+            src={pokeDataList.sprites[type.type]}
             alt={pokeDataList.koreaName}
           ></Img>
         </ImgContainer>

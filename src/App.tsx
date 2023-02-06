@@ -2,12 +2,13 @@ import PokeDex from "./comp/pokeDex";
 import "./App.css";
 import { Router, RouterProvider } from "react-router-dom";
 import { router } from "./comp/store/router/router";
+import { Provider } from "jotai";
 
 function App() {
   return (
-    <div>
+    <Provider>
       <RouterProvider router={router} />
-    </div>
+    </Provider>
   );
 }
 
