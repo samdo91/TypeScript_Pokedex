@@ -7,6 +7,7 @@ import { useInView } from "react-intersection-observer";
 import { useAtom } from "jotai";
 import { pokeImageType } from "../../store/jotai";
 
+// interface를 쓸때는 앞에 I를 붙이고 Type을 쓸때는 앞에 T를 붙이자.그냥 내가 약속한다.
 interface IpersonalList {
   name: string;
   koreaName: string;
@@ -26,6 +27,8 @@ interface IpersonalList {
 function PokeCard(props: { name: string; url: string }) {
   const { name, url } = props;
   const [type, setType] = useAtom(pokeImageType);
+  //intersection-observer. ref는 관찰할 컨테이너나 태그라고 보면된다.
+  // inView는 그로 인한 상태값이라고 보면 될것이다.
   const { ref, inView, entry } = useInView({
     /* Optional options */
     threshold: 0,
@@ -47,6 +50,7 @@ function PokeCard(props: { name: string; url: string }) {
   });
 
   useEffect(() => {
+    // inview가 true가 아니면 작동하지 않는다.
     if (!inView) {
       return;
     }
@@ -75,7 +79,7 @@ function PokeCard(props: { name: string; url: string }) {
       });
     })();
   }, [name, inView]);
-
+  //*로딩 화면 대신 로딩 카드로 만들었다. 기본적으로 personalList가 생성될떄는loading의 기본값을 farse로 해놓았다. 그리고 useEffet가 한번 돌아서 로딩값이 ture가 되먄 아래 최종컨포넌트로 변경된다. */
   if (!personalList.loading) {
     return (
       <CardBox ref={ref}>

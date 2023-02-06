@@ -15,13 +15,12 @@ function PokeBoard() {
     next: "",
     results: [],
   });
-
+  /* 인피니티 스크롤  로딩은 따로 만들어줬고 넥스트값을 api를 계속 호출한다. */
   const [fokeInfiniteScroll] = useInfiniteScroll({
     loading: false,
     hasNextPage: pokeState.next !== "",
     onLoadMore: async () => {
       const result = await AxiosApi(pokeState.next);
-      console.log(result);
       setPokeState({
         ...pokeState,
         next: result.next,
@@ -60,6 +59,7 @@ function PokeBoard() {
         })}
       </List>
       <Footer>
+        {/* 이부분에 도달하면 onLoadMore을 호출한다.*/}
         <Loading ref={fokeInfiniteScroll}>Loading....</Loading>
       </Footer>
     </div>
